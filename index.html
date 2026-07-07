@@ -342,11 +342,13 @@
     .preview-wrap{padding:0;max-height:none;}
     #invoice,#letterDoc{box-shadow:none;width:100%;}
     .app{display:block;}
+    body.print-invoice #letterApp{display:none;}
+    body.print-letter #invoiceApp{display:none;}
   }
 </style>
 </head>
 <body>
-<div class="app">
+<div class="app" id="invoiceApp">
 
   <!-- ============ FORM PANEL ============ -->
   <div class="panel">
@@ -500,9 +502,19 @@
       </div>
     </div>
 
+    <div class="section">
+      <h2>Save &amp; Data</h2>
+      <div class="actions">
+        <button class="btn btn-secondary" onclick="exportJSON()">⬇ Export JSON</button>
+        <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">⬆ Import JSON</button>
+        <button class="btn btn-secondary" onclick="resetAll()">↺ Reset / Clear</button>
+      </div>
+      <input type="file" id="importFile" accept="application/json,.json" style="display:none;" onchange="importJSON(this.files[0]);this.value='';">
+    </div>
+
     <div class="actions">
       <button class="btn btn-primary" onclick="downloadPDF()">⬇ Download PDF</button>
-      <button class="btn btn-secondary" onclick="window.print()">🖨 Print</button>
+      <button class="btn btn-secondary" onclick="printDoc('invoice')">🖨 Print</button>
     </div>
   </div>
 
@@ -634,7 +646,7 @@ ChessKidoo Coaching Team</textarea>
 
       <div class="actions">
         <button class="btn btn-primary" onclick="downloadLetterPDF()">⬇ Download Letter PDF</button>
-        <button class="btn btn-secondary" onclick="window.print()">🖨 Print</button>
+        <button class="btn btn-secondary" onclick="printDoc('letter')">🖨 Print</button>
       </div>
     </div>
 
@@ -726,11 +738,13 @@ function addItem(){
   items.push({ desc:'New item', sub:'', qty:1, rate:0 });
   renderItemsForm();
   renderPreview();
+  saveState();
 }
 function removeItem(i){
   items.splice(i,1);
   renderItemsForm();
   renderPreview();
+  saveState();
 }
 function updateItem(i, key, val, cardEl){
   if(key==='qty' || key==='rate'){
@@ -884,6 +898,7 @@ function bindAppearance(){
     s.addEventListener('click', () => {
       document.getElementById('accent').value = s.dataset.color;
       applyAccent();
+      saveState();
     });
   });
 }
@@ -959,6 +974,104 @@ function downloadLetterPDF(){
   });
 }
 
+// ---------- STATE / PERSISTENCE ----------
+const STORE_KEY = 'chesskidoo_generator_v1';
+
+function collectState(){
+  const g = id => { const el = document.getElementById(id); return el ? el.value : ''; };
+  return {
+    docType: g('docType'), invNo: g('invNo'), invDate: g('invDate'), dueDate: g('dueDate'), status: g('status'),
+    fromName: g('fromName'), fromTagline: g('fromTagline'), fromDetails: g('fromDetails'),
+    toName: g('toName'), toDetails: g('toDetails'),
+    items: items.map(i => ({ ...i })),
+    discountPct: g('discountPct'), taxPct: g('taxPct'), amountPaid: g('amountPaid'),
+    notes: g('notes'),
+    invFont: g('invFont'), invSize: g('invSize'), accent: g('accent'),
+    letterDate: g('letterDate'), letterHeading: g('letterHeading'),
+    letterContent: g('letterContent'), letterClosing: g('letterClosing')
+  };
+}
+
+function applyState(s){
+  if(!s || typeof s !== 'object') return;
+  const set = (id, v) => { const el = document.getElementById(id); if(el && v !== undefined) el.value = v; };
+  set('docType', s.docType); set('invNo', s.invNo); set('invDate', s.invDate); set('dueDate', s.dueDate); set('status', s.status);
+  set('fromName', s.fromName); set('fromTagline', s.fromTagline); set('fromDetails', s.fromDetails);
+  set('toName', s.toName); set('toDetails', s.toDetails);
+  if(Array.isArray(s.items)) items = s.items.map(i => ({ ...i }));
+  set('discountPct', s.discountPct); set('taxPct', s.taxPct); set('amountPaid', s.amountPaid);
+  set('notes', s.notes);
+  set('invFont', s.invFont); set('invSize', s.invSize); set('accent', s.accent);
+  set('letterDate', s.letterDate); set('letterHeading', s.letterHeading);
+  set('letterContent', s.letterContent); set('letterClosing', s.letterClosing);
+  applyFont(); applySize(); applyAccent();
+  renderItemsForm(); renderPreview(); renderLetter();
+}
+
+function saveState(){
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(collectState())); } catch(e){}
+}
+function loadState(){
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    if(raw) applyState(JSON.parse(raw));
+  } catch(e){}
+}
+function debounce(fn, ms){
+  let t;
+  return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); };
+}
+function startAutosave(){
+  const d = debounce(saveState, 400);
+  document.addEventListener('input', d);
+  document.addEventListener('change', d);
+}
+
+function exportJSON(){
+  const data = collectState();
+  data._meta = { app: 'ChessKidoo Generator', version: 1, exported: new Date().toISOString() };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const kind = data.docType === 'quotation' ? 'Quotation' : 'Invoice';
+  a.href = url;
+  a.download = 'ChessKidoo_' + kind + '_' + (data.invNo || 'data') + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importJSON(file){
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      applyState(data);
+      saveState();
+    } catch(err){
+      alert('Could not import: invalid JSON file.');
+    }
+  };
+  reader.readAsText(file);
+}
+
+function resetAll(){
+  if(!confirm('Clear all saved data and reset to defaults?')) return;
+  try { localStorage.removeItem(STORE_KEY); } catch(e){}
+  location.reload();
+}
+
+function printDoc(which){
+  document.body.classList.add('print-' + which);
+  const cleanup = () => {
+    document.body.classList.remove('print-invoice', 'print-letter');
+    window.removeEventListener('afterprint', cleanup);
+  };
+  window.addEventListener('afterprint', cleanup);
+  window.print();
+  setTimeout(cleanup, 600);
+}
+
 // init
 document.getElementById('invDate').valueAsDate = new Date(2026,6,7);
 renderItemsForm();
@@ -971,6 +1084,8 @@ renderPreview();
 bindLetter();
 document.getElementById('letterDate').valueAsDate = new Date(2026,6,7);
 renderLetter();
+loadState();
+startAutosave();
 </script>
 </body>
 </html>
