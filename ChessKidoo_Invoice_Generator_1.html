@@ -5,6 +5,9 @@
 <title>ChessKidoo Invoice Generator</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Playfair+Display:wght@500;700&family=Montserrat:wght@500;700&family=Lato:wght@400;700&family=Open+Sans:wght@400;600&family=Roboto+Mono&display=swap" rel="stylesheet">
 <style>
   :root{
     --navy:#1a2744;
@@ -18,6 +21,7 @@
     --ink:#1f2937;
     --green:#1a7a4a;
     --red:#c0392b;
+    --inv-font: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
   }
   *{box-sizing:border-box;}
   body{
@@ -162,6 +166,18 @@
   .btn-secondary:hover{background:rgba(255,255,255,0.08);}
   .actions{margin-top:6px;}
 
+  /* ---------- APPEARANCE CONTROLS ---------- */
+  input[type="color"]{
+    height:38px;padding:3px;cursor:pointer;background:rgba(255,255,255,0.06);
+  }
+  .swatches{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
+  .swatch{
+    width:24px;height:24px;border-radius:6px;cursor:pointer;
+    border:2px solid rgba(255,255,255,0.25);transition:transform .08s ease;
+  }
+  .swatch:hover{transform:scale(1.12);}
+  .swatch.active{border-color:#fff;box-shadow:0 0 0 2px var(--orange);}
+
   /* ---------- PREVIEW PANEL ---------- */
   .preview-wrap{
     padding:32px;
@@ -179,6 +195,8 @@
     padding:48px 46px 40px;
     position:relative;
     color:var(--ink);
+    font-family: var(--inv-font);
+    font-size:16px;
   }
   .inv-top{
     display:flex;
@@ -190,13 +208,13 @@
   .inv-title{text-align:right;}
   .inv-title h1{
     margin:0;
-    font-size:28px;
+    font-size:1.75em;
     color:var(--navy);
     letter-spacing:1px;
     font-weight:800;
   }
   .inv-title .meta{
-    font-size:10.5px;
+    font-size:.66em;
     color:var(--muted);
     margin-top:6px;
     line-height:1.6;
@@ -206,7 +224,7 @@
     margin-top:8px;
     padding:3px 11px;
     border-radius:20px;
-    font-size:10px;
+    font-size:.625em;
     font-weight:700;
     letter-spacing:.4px;
     text-transform:uppercase;
@@ -224,17 +242,17 @@
     margin-bottom:22px;
   }
   .parties .label{
-    font-size:9.5px;font-weight:700;letter-spacing:.6px;
+    font-size:.59em;font-weight:700;letter-spacing:.6px;
     color:var(--orange);text-transform:uppercase;margin-bottom:5px;
   }
-  .parties .name{font-size:14px;font-weight:700;color:var(--navy);}
-  .parties .sub{font-size:11px;color:var(--muted);line-height:1.6;margin-top:2px;white-space:pre-line;}
+  .parties .name{font-size:.875em;font-weight:700;color:var(--navy);}
+  .parties .sub{font-size:.69em;color:var(--muted);line-height:1.6;margin-top:2px;white-space:pre-line;}
 
   table.items{width:100%;border-collapse:collapse;margin-bottom:6px;}
   table.items thead th{
     background:var(--navy);
     color:#fff;
-    font-size:9.5px;
+    font-size:.59em;
     text-transform:uppercase;
     letter-spacing:.5px;
     padding:9px 10px;
@@ -243,14 +261,14 @@
   table.items thead th.num{text-align:right;}
   table.items tbody td{
     padding:9px 10px;
-    font-size:11.5px;
+    font-size:.72em;
     border-bottom:1px solid var(--line);
     vertical-align:top;
   }
   table.items tbody tr:nth-child(odd){background:#f9fafb;}
   table.items tbody td.num{text-align:right;white-space:nowrap;}
   table.items tbody td.desc .title{font-weight:700;color:var(--navy);}
-  table.items tbody td.desc .sub{color:var(--muted);font-size:10.5px;margin-top:2px;}
+  table.items tbody td.desc .sub{color:var(--muted);font-size:.875em;margin-top:2px;}
 
   .totals{
     display:flex;
@@ -260,7 +278,7 @@
   .totals-inner{width:280px;}
   .totals-row{
     display:flex;justify-content:space-between;
-    font-size:11.5px;padding:5px 0;color:var(--ink);
+    font-size:.72em;padding:5px 0;color:var(--ink);
   }
   .totals-row.muted{color:var(--muted);}
   .totals-rule{border:none;border-top:1px solid var(--line);margin:6px 0;}
@@ -272,26 +290,26 @@
     border-radius:6px;
     margin-top:8px;
   }
-  .balance-box .lbl{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;}
-  .balance-box .val{font-size:17px;font-weight:800;}
+  .balance-box .lbl{font-size:.75em;font-weight:700;text-transform:uppercase;letter-spacing:.4px;}
+  .balance-box .val{font-size:1.06em;font-weight:800;}
 
   .notes{margin-top:26px;}
   .notes .label{
-    font-size:9.5px;font-weight:700;letter-spacing:.6px;
+    font-size:.59em;font-weight:700;letter-spacing:.6px;
     color:var(--orange);text-transform:uppercase;margin-bottom:6px;
   }
-  .notes p{font-size:11px;color:#374151;line-height:1.7;white-space:pre-line;margin:0;}
+  .notes p{font-size:.69em;color:#374151;line-height:1.7;white-space:pre-line;margin:0;}
 
   .sign{
     display:grid;grid-template-columns:1fr 1fr;
     gap:20px;margin-top:34px;padding-top:16px;border-top:1px solid var(--line);
   }
-  .sign .who{font-size:12px;font-weight:700;color:var(--navy);}
-  .sign .role{font-size:9.5px;color:var(--muted);margin-top:2px;}
+  .sign .who{font-size:.75em;font-weight:700;color:var(--navy);}
+  .sign .role{font-size:.59em;color:var(--muted);margin-top:2px;}
 
   .foot{
     text-align:center;
-    font-size:9.5px;
+    font-size:.59em;
     color:#9ca3af;
     font-style:italic;
     margin-top:30px;
@@ -404,6 +422,52 @@
         <textarea id="notes" style="min-height:90px;">1. Please remit payment at your earliest convenience.
 2. For any queries regarding this invoice, please contact ChessKidoo directly.
 3. This invoice reflects the outstanding balance for services rendered.</textarea>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Appearance</h2>
+      <div class="field">
+        <label>Font</label>
+        <select id="invFont">
+          <option value='"Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif'>Default (Segoe UI)</option>
+          <option value='Arial, Helvetica, sans-serif'>Arial</option>
+          <option value='"Comic Sans MS", "Comic Sans", cursive'>Comic Sans MS</option>
+          <option value='Georgia, "Times New Roman", serif'>Georgia</option>
+          <option value='"Times New Roman", Times, serif'>Times New Roman</option>
+          <option value='"Courier New", monospace'>Courier New</option>
+          <option value='Verdana, Geneva, sans-serif'>Verdana</option>
+          <option value='"Trebuchet MS", sans-serif'>Trebuchet MS</option>
+          <option value='Impact, Haettenschweiler, sans-serif'>Impact</option>
+          <option value='"Poppins", sans-serif'>Poppins</option>
+          <option value='"Playfair Display", serif'>Playfair Display</option>
+          <option value='"Montserrat", sans-serif'>Montserrat</option>
+          <option value='"Lato", sans-serif'>Lato</option>
+          <option value='"Open Sans", sans-serif'>Open Sans</option>
+          <option value='"Roboto Mono", monospace'>Roboto Mono</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Text Size</label>
+        <select id="invSize">
+          <option value="14">Small</option>
+          <option value="16" selected>Medium</option>
+          <option value="18">Large</option>
+          <option value="20">Extra Large</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Accent Color</label>
+        <input type="color" id="accent" value="#e8631c" style="width:100%;">
+        <div class="swatches" id="swatches">
+          <div class="swatch" data-color="#e8631c" style="background:#e8631c;"></div>
+          <div class="swatch" data-color="#1a7a4a" style="background:#1a7a4a;"></div>
+          <div class="swatch" data-color="#2563eb" style="background:#2563eb;"></div>
+          <div class="swatch" data-color="#7c3aed" style="background:#7c3aed;"></div>
+          <div class="swatch" data-color="#db2777" style="background:#db2777;"></div>
+          <div class="swatch" data-color="#0f172a" style="background:#0f172a;"></div>
+          <div class="swatch" data-color="#d97706" style="background:#d97706;"></div>
+        </div>
       </div>
     </div>
 
@@ -679,6 +743,42 @@ function bindLiveInputs(){
   });
 }
 
+function applyFont(){
+  document.getElementById('invoice').style.setProperty('--inv-font', document.getElementById('invFont').value);
+}
+function applySize(){
+  document.getElementById('invoice').style.fontSize = document.getElementById('invSize').value + 'px';
+}
+function lighten(hex, amt){
+  let c = hex.replace('#','');
+  if(c.length === 3) c = c.split('').map(x => x + x).join('');
+  let r = parseInt(c.substr(0,2),16), g = parseInt(c.substr(2,2),16), b = parseInt(c.substr(4,2),16);
+  r = Math.round(r + (255 - r) * amt); g = Math.round(g + (255 - g) * amt); b = Math.round(b + (255 - b) * amt);
+  return '#' + [r,g,b].map(x => x.toString(16).padStart(2,'0')).join('');
+}
+function syncSwatch(hex){
+  document.querySelectorAll('#swatches .swatch').forEach(s => {
+    s.classList.toggle('active', s.dataset.color.toLowerCase() === hex.toLowerCase());
+  });
+}
+function applyAccent(){
+  const hex = document.getElementById('accent').value;
+  document.documentElement.style.setProperty('--orange', hex);
+  document.documentElement.style.setProperty('--orange-2', lighten(hex, 0.25));
+  syncSwatch(hex);
+}
+function bindAppearance(){
+  document.getElementById('invFont').addEventListener('change', applyFont);
+  document.getElementById('invSize').addEventListener('change', applySize);
+  document.getElementById('accent').addEventListener('input', applyAccent);
+  document.querySelectorAll('#swatches .swatch').forEach(s => {
+    s.addEventListener('click', () => {
+      document.getElementById('accent').value = s.dataset.color;
+      applyAccent();
+    });
+  });
+}
+
 function downloadPDF(){
   const node = document.getElementById('invoice');
   const btns = document.querySelectorAll('.btn');
@@ -709,6 +809,10 @@ function downloadPDF(){
 document.getElementById('invDate').valueAsDate = new Date(2026,6,7);
 renderItemsForm();
 bindLiveInputs();
+bindAppearance();
+applyFont();
+applySize();
+applyAccent();
 renderPreview();
 </script>
 </body>
