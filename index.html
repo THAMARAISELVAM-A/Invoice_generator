@@ -351,34 +351,59 @@
     position:fixed;inset:0;background:var(--navy);
     display:flex;align-items:center;justify-content:center;z-index:1000;
   }
-  .landing-card{text-align:center;color:#fff;max-width:420px;padding:20px;}
-  .landing-card h1{font-size:2.4em;margin:0;letter-spacing:1px;}
-  .landing-card p{color:var(--orange-2);margin:6px 0 28px;font-size:1.1em;}
+  .landing-card{text-align:center;color:#fff;max-width:480px;padding:20px;}
+  .landing-logo{
+    width:90px;height:90px;margin:0 auto 20px;
+    background:var(--orange);border-radius:22px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:48px;color:#fff;box-shadow:0 8px 30px rgba(232,99,28,0.35);
+  }
+  .landing-card h1{font-size:2.2em;margin:0;letter-spacing:1px;}
+  .landing-card .subtitle{color:var(--orange-2);margin:8px 0 28px;font-size:1em;}
   .landing-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
-  .landing-btns .btn{min-width:160px;padding:14px 20px;font-size:14px;}
+  .landing-btns .btn{min-width:170px;padding:14px 20px;font-size:14px;}
+  .landing-info{font-size:.72em;color:#b9c2d6;margin-top:24px;line-height:1.7;}
 
   /* ---------- APP SWITCHER ---------- */
   .app-switch{
-    position:fixed;top:10px;right:10px;z-index:900;
-    display:flex;gap:6px;background:rgba(255,255,255,0.12);
-    padding:4px;border-radius:8px;backdrop-filter:blur(6px);
+    position:fixed;top:12px;right:12px;z-index:900;
+    display:flex;gap:0;background:rgba(26,39,68,0.85);
+    padding:4px;border-radius:10px;backdrop-filter:blur(8px);
+    border:1px solid rgba(255,255,255,0.12);box-shadow:0 4px 16px rgba(0,0,0,0.25);
   }
   .app-switch button{
-    background:transparent;color:#fff;border:none;padding:6px 14px;
-    border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;
-    font-family:inherit;
+    background:transparent;color:#dbe1ee;border:none;padding:8px 18px;
+    border-radius:7px;cursor:pointer;font-size:12px;font-weight:600;
+    font-family:inherit;display:flex;align-items:center;gap:6px;
+    transition:all .15s ease;
   }
-  .app-switch button.active{background:var(--orange);color:#fff;}
+  .app-switch button:hover{color:#fff;background:rgba(255,255,255,0.08);}
+  .app-switch button.active{background:var(--orange);color:#fff;box-shadow:0 2px 8px rgba(232,99,28,0.35);}
+
+  /* ---------- SAVE INDICATOR ---------- */
+  .save-indicator{
+    position:fixed;bottom:14px;right:14px;z-index:900;
+    font-size:10px;color:#9ca3af;background:rgba(255,255,255,0.06);
+    padding:4px 10px;border-radius:6px;backdrop-filter:blur(4px);
+    border:1px solid rgba(255,255,255,0.08);opacity:0;transition:opacity .3s ease;
+  }
+  .save-indicator.show{opacity:1;}
+  .save-indicator .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-right:4px;}
  </style>
 </head>
 <body>
 <div id="landing">
   <div class="landing-card">
+    <div class="landing-logo">♞</div>
     <h1>ChessKidoo Chess Academy</h1>
-    <p></p>
+    <div class="subtitle">Invoice & Letter Generator</div>
     <div class="landing-btns">
       <button class="btn btn-primary" onclick="showApp('invoice')">Invoice Generator</button>
       <button class="btn btn-secondary" onclick="showApp('letter')">Letter Pad</button>
+    </div>
+    <div class="landing-info">
+      Institution Reg. No.: TN-07-01127105<br>
+      chesskidoo37@gmail.com | +91 7812868343, +91 90258 46663
     </div>
   </div>
 </div>
@@ -388,8 +413,8 @@
   <!-- ============ FORM PANEL ============ -->
     <div class="panel">
       <div class="app-switch">
-        <button class="active" onclick="showApp('invoice')" id="sw-invoice">Invoice</button>
-        <button onclick="showApp('letter')" id="sw-letter">Letter</button>
+        <button class="active" onclick="showApp('invoice')" id="sw-invoice">📄 Invoice</button>
+        <button onclick="showApp('letter')" id="sw-letter">✉ Letter</button>
       </div>
       <div class="brand-row">
         <div class="knight">♞</div>
@@ -650,8 +675,8 @@ Phone: +91 7812868343, +91 90258 46663</textarea>
   <section class="app" id="letterApp">
     <div class="panel">
       <div class="app-switch">
-        <button onclick="showApp('invoice')" id="sw-invoice">Invoice</button>
-        <button class="active" onclick="showApp('letter')" id="sw-letter">Letter</button>
+        <button onclick="showApp('invoice')" id="sw-invoice">📄 Invoice</button>
+        <button class="active" onclick="showApp('letter')" id="sw-letter">✉ Letter</button>
       </div>
       <div class="brand-row">
         <div class="knight">✉</div>
@@ -718,6 +743,8 @@ ChessKidoo Chess Academy Coaching Team</textarea>
       </div>
     </div>
   </section>
+
+  <div class="save-indicator" id="saveIndicator"><span class="dot"></span>Saved locally</div>
 
 <script>
 let items = [
@@ -1077,13 +1104,31 @@ function applyState(s){
 }
 
 function saveState(){
-  try { localStorage.setItem(STORE_KEY, JSON.stringify(collectState())); } catch(e){}
+  try {
+    localStorage.setItem(STORE_KEY, JSON.stringify(collectState()));
+    showSaveIndicator();
+  } catch(e){ showSaveError(); }
 }
 function loadState(){
   try {
     const raw = localStorage.getItem(STORE_KEY);
     if(raw) applyState(JSON.parse(raw));
   } catch(e){}
+}
+function showSaveIndicator(){
+  const el = document.getElementById('saveIndicator');
+  if(!el) return;
+  el.classList.add('show');
+  clearTimeout(el._timer);
+  el._timer = setTimeout(() => el.classList.remove('show'), 2000);
+}
+function showSaveError(){
+  const el = document.getElementById('saveIndicator');
+  if(!el) return;
+  el.innerHTML = '⚠ Storage full / disabled';
+  el.classList.add('show');
+  clearTimeout(el._timer);
+  el._timer = setTimeout(() => el.classList.remove('show'), 3000);
 }
 function debounce(fn, ms){
   let t;
@@ -1147,6 +1192,7 @@ function showApp(which){
   document.querySelectorAll('.app-switch button').forEach(b => b.classList.remove('active'));
   const btn = document.getElementById('sw-' + which);
   if(btn) btn.classList.add('active');
+  saveState();
 }
 
 // init
