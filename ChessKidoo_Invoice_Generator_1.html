@@ -374,8 +374,8 @@
 <body>
 <div id="landing">
   <div class="landing-card">
-    <h1>ChessKidoo</h1>
-    <p>Building Brilliance</p>
+    <h1>ChessKidoo Chess Academy</h1>
+    <p></p>
     <div class="landing-btns">
       <button class="btn btn-primary" onclick="showApp('invoice')">Invoice Generator</button>
       <button class="btn btn-secondary" onclick="showApp('letter')">Letter Pad</button>
@@ -393,11 +393,11 @@
       </div>
       <div class="brand-row">
         <div class="knight">♞</div>
-      <div>
-        <h1>ChessKidoo</h1>
-        <p>Invoice Generator</p>
+        <div>
+          <h1>ChessKidoo Chess Academy</h1>
+          <p>Invoice Generator</p>
+        </div>
       </div>
-    </div>
 
     <div class="section">
       <h2>Invoice Details</h2>
@@ -438,17 +438,17 @@
       <h2>From (ChessKidoo)</h2>
       <div class="field">
         <label>Business Name</label>
-        <input id="fromName" value="ChessKidoo">
+         <input id="fromName" value="ChessKidoo Chess Academy">
       </div>
       <div class="field">
         <label>Tagline</label>
-        <input id="fromTagline" value="Building Brilliance">
+         <input id="fromTagline" value="">
       </div>
        <div class="field">
          <label>Address / Contact</label>
          <textarea id="fromDetails" placeholder="Address, phone, email, GSTIN, etc.">Institution Reg. No.: TN-07-01127105
 Email: chesskidoo37@gmail.com
-Phone: +91 78128 68343, +91 90258 46663</textarea>
+Phone: +91 7812868343, +91 90258 46663</textarea>
        </div>
     </div>
 
@@ -588,7 +588,7 @@ Phone: +91 78128 68343, +91 90258 46663</textarea>
         <div>
           <div class="label">From</div>
           <div class="name" id="pv-fromName">ChessKidoo</div>
-          <div class="sub" id="pv-fromTagline" style="font-style:italic;">Building Brilliance</div>
+          <div class="sub" id="pv-fromTagline" style="font-style:italic;"></div>
           <div class="sub" id="pv-fromDetails"></div>
         </div>
       </div>
@@ -636,7 +636,7 @@ Phone: +91 78128 68343, +91 90258 46663</textarea>
         </div>
       </div>
 
-      <div class="foot">ChessKidoo • Building Brilliance • Institution Reg. No.: TN-07-01127105 • chesskidoo37@gmail.com • +91 78128 68343, +91 90258 46663</div>
+      <div class="foot">ChessKidoo Chess Academy • Institution Reg. No.: TN-07-01127105 • chesskidoo37@gmail.com • +91 7812868343, +91 90258 46663</div>
     </div>
   </div>
 
@@ -652,7 +652,7 @@ Phone: +91 78128 68343, +91 90258 46663</textarea>
       <div class="brand-row">
         <div class="knight">✉</div>
         <div>
-          <h1>ChessKidoo</h1>
+          <h1>ChessKidoo Chess Academy</h1>
           <p>Letter Pad</p>
         </div>
       </div>
@@ -682,10 +682,10 @@ Phone: +91 78128 68343, +91 90258 46663</textarea>
 
 We are pleased to share an update regarding your child's progress at ChessKidoo. Over the past weeks, we have observed steady improvement in both tactical awareness and overall confidence at the board.
 
-We look forward to continuing this journey of Building Brilliance together.
+We look forward to continuing this journey together.
 
 Warm regards,
-ChessKidoo Coaching Team</textarea>
+ChessKidoo Chess Academy Coaching Team</textarea>
         </div>
       </div>
 
@@ -706,10 +706,11 @@ ChessKidoo Coaching Team</textarea>
         <div class="ld-body" id="ld-body"></div>
         <div class="ld-closing" id="ld-closing"></div>
         <div class="ld-sign">
-          <div class="who">ChessKidoo</div>
+          <div class="who">ChessKidoo Chess Academy</div>
           <div class="role">Authorized Signatory</div>
+          <div style="font-size:.7em;color:#6b7280;margin-top:4px;">Institution Reg. No.: TN-07-01127105 | chesskidoo37@gmail.com | +91 7812868343, +91 90258 46663</div>
         </div>
-        <div class="foot">ChessKidoo • Building Brilliance</div>
+        <div class="foot">ChessKidoo Chess Academy</div>
       </div>
     </div>
   </section>
@@ -835,13 +836,8 @@ function renderPreview(){
   chip.className = 'status-chip status-' + status;
   chip.innerText = status === 'paid' ? 'Paid' : (status === 'partial' ? 'Partially Paid' : 'Unpaid');
 
-  const balanceLabel = document.getElementById('pv-balanceLabel');
-  if(balanceLabel){
-    balanceLabel.innerText = status === 'paid' ? 'Amount Paid' : (status === 'partial' ? 'Balance to be Paid' : 'Amount to be Paid');
-  }
-
-  document.getElementById('pv-fromName').innerText = document.getElementById('fromName').value || 'ChessKidoo';
-  document.getElementById('pv-fromNameSign').innerText = document.getElementById('fromName').value || 'ChessKidoo';
+  document.getElementById('pv-fromName').innerText = document.getElementById('fromName').value || 'ChessKidoo Chess Academy';
+  document.getElementById('pv-fromNameSign').innerText = document.getElementById('fromName').value || 'ChessKidoo Chess Academy';
   document.getElementById('pv-fromTagline').innerText = document.getElementById('fromTagline').value || '';
   document.getElementById('pv-fromDetails').innerText = document.getElementById('fromDetails').value || '';
 
