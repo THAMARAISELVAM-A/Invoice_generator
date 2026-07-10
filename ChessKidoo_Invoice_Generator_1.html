@@ -405,10 +405,12 @@
         <label>Tagline</label>
         <input id="fromTagline" value="Building Brilliance">
       </div>
-      <div class="field">
-        <label>Address / Contact</label>
-        <textarea id="fromDetails" placeholder="Address, phone, email, GSTIN, etc."></textarea>
-      </div>
+       <div class="field">
+         <label>Address / Contact</label>
+         <textarea id="fromDetails" placeholder="Address, phone, email, GSTIN, etc.">Institution Reg. No.: TN-07-01127105
+Email: chesskidoo37@gmail.com
+Phone: +91 7812868343, +91 90258 46663</textarea>
+       </div>
     </div>
 
     <div class="section">
@@ -573,7 +575,7 @@
           <div class="totals-row" style="font-weight:700;"><span>Total</span><span id="pv-total">₹0</span></div>
           <div class="totals-row muted" id="pv-paidRow"><span>Amount Paid</span><span id="pv-paid">−₹0</span></div>
           <div class="balance-box" id="balanceBox">
-            <span class="lbl">Balance Due</span>
+            <span class="lbl" id="pv-balanceLabel">Balance Due</span>
             <span class="val" id="pv-balance">₹0</span>
           </div>
         </div>
@@ -595,7 +597,7 @@
         </div>
       </div>
 
-      <div class="foot">ChessKidoo • Building Brilliance • For queries or confirmation, please contact us at your convenience.</div>
+      <div class="foot">ChessKidoo • Building Brilliance • Institution Reg. No.: TN-07-01127105 • chesskidoo37@gmail.com • +91 7812868343, +91 90258 46663</div>
     </div>
   </div>
 
@@ -789,6 +791,11 @@ function renderPreview(){
   const chip = document.getElementById('pv-status');
   chip.className = 'status-chip status-' + status;
   chip.innerText = status === 'paid' ? 'Paid' : (status === 'partial' ? 'Partially Paid' : 'Unpaid');
+
+  const balanceLabel = document.getElementById('pv-balanceLabel');
+  if(balanceLabel){
+    balanceLabel.innerText = status === 'paid' ? 'Amount Paid' : (status === 'partial' ? 'Balance to be Paid' : 'Amount to be Paid');
+  }
 
   document.getElementById('pv-fromName').innerText = document.getElementById('fromName').value || 'ChessKidoo';
   document.getElementById('pv-fromNameSign').innerText = document.getElementById('fromName').value || 'ChessKidoo';
