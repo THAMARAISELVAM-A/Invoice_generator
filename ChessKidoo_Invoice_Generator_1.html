@@ -482,6 +482,10 @@ Phone: +91 7812868343, +91 90258 46663</textarea>
           <input id="taxPct" type="number" min="0" value="0">
         </div>
       </div>
+      <div class="field">
+        <label>Tax Amount (₹)</label>
+        <input id="taxAmt" type="number" min="0" value="0" placeholder="Enter fixed tax amount (overrides %)">
+      </div>
       <div class="field" id="amountPaidField">
         <label>Amount Already Paid (₹)</label>
         <input id="amountPaid" type="number" min="0" value="0">
@@ -492,7 +496,7 @@ Phone: +91 7812868343, +91 90258 46663</textarea>
       <h2>Notes & Terms</h2>
       <div class="field">
         <textarea id="notes" style="min-height:90px;">1. Please remit payment at your earliest convenience.
-2. For any queries regarding this invoice, please contact ChessKidoo directly.
+2. For any queries regarding this invoice, please contact ChessKidoo Chess Academy directly.
 3. This invoice reflects the outstanding balance for services rendered.</textarea>
       </div>
     </div>
@@ -587,7 +591,7 @@ Phone: +91 7812868343, +91 90258 46663</textarea>
         </div>
         <div>
           <div class="label">From</div>
-          <div class="name" id="pv-fromName">ChessKidoo</div>
+          <div class="name" id="pv-fromName">ChessKidoo Chess Academy</div>
           <div class="sub" id="pv-fromTagline" style="font-style:italic;"></div>
           <div class="sub" id="pv-fromDetails"></div>
         </div>
@@ -627,7 +631,7 @@ Phone: +91 7812868343, +91 90258 46663</textarea>
 
       <div class="sign">
         <div>
-          <div class="who" id="pv-fromNameSign">ChessKidoo</div>
+          <div class="who" id="pv-fromNameSign">ChessKidoo Chess Academy</div>
           <div class="role">Authorized Signatory</div>
         </div>
         <div>
@@ -866,11 +870,12 @@ function renderPreview(){
 
   const discountPct = parseFloat(document.getElementById('discountPct').value) || 0;
   const taxPct = parseFloat(document.getElementById('taxPct').value) || 0;
+  const taxAmt = parseFloat(document.getElementById('taxAmt').value) || 0;
   const paid = parseFloat(document.getElementById('amountPaid').value) || 0;
 
   const discountVal = subtotal * discountPct / 100;
   const afterDiscount = subtotal - discountVal;
-  const taxVal = afterDiscount * taxPct / 100;
+  const taxVal = taxAmt > 0 ? taxAmt : (afterDiscount * taxPct / 100);
   const total = afterDiscount + taxVal;
   const balance = total - paid;
 
@@ -885,9 +890,10 @@ function renderPreview(){
   }
 
   const taxRow = document.getElementById('pv-taxRow');
-  if(taxPct > 0){
+  if(taxVal > 0){
     taxRow.style.display = 'flex';
-    document.getElementById('pv-taxVal').innerText = '+' + fmt(taxVal) + ' (' + taxPct + '%)';
+    const taxDisplay = taxAmt > 0 ? '+' + fmt(taxAmt) : '+' + fmt(taxVal) + ' (' + taxPct + '%)';
+    document.getElementById('pv-taxVal').innerText = taxDisplay;
   } else {
     taxRow.style.display = 'none';
   }
@@ -917,7 +923,7 @@ function renderPreview(){
 
 function bindLiveInputs(){
   const ids = ['invNo','invDate','dueDate','status','fromName','fromTagline','fromDetails',
-               'toName','toDetails','discountPct','taxPct','amountPaid','notes','docType'];
+               'toName','toDetails','discountPct','taxPct','taxAmt','amountPaid','notes','docType'];
   ids.forEach(id => {
     const el = document.getElementById(id);
     el.addEventListener('input', renderPreview);
@@ -1046,7 +1052,7 @@ function collectState(){
     fromName: g('fromName'), fromTagline: g('fromTagline'), fromDetails: g('fromDetails'),
     toName: g('toName'), toDetails: g('toDetails'),
     items: items.map(i => ({ ...i })),
-    discountPct: g('discountPct'), taxPct: g('taxPct'), amountPaid: g('amountPaid'),
+    discountPct: g('discountPct'), taxPct: g('taxPct'), taxAmt: g('taxAmt'), amountPaid: g('amountPaid'),
     notes: g('notes'),
     invFont: g('invFont'), invSize: g('invSize'), accent: g('accent'),
     letterDate: g('letterDate'), letterHeading: g('letterHeading'),
@@ -1061,7 +1067,7 @@ function applyState(s){
   set('fromName', s.fromName); set('fromTagline', s.fromTagline); set('fromDetails', s.fromDetails);
   set('toName', s.toName); set('toDetails', s.toDetails);
   if(Array.isArray(s.items)) items = s.items.map(i => ({ ...i }));
-  set('discountPct', s.discountPct); set('taxPct', s.taxPct); set('amountPaid', s.amountPaid);
+  set('discountPct', s.discountPct); set('taxPct', s.taxPct); set('taxAmt', s.taxAmt); set('amountPaid', s.amountPaid);
   set('notes', s.notes);
   set('invFont', s.invFont); set('invSize', s.invSize); set('accent', s.accent);
   set('letterDate', s.letterDate); set('letterHeading', s.letterHeading);
