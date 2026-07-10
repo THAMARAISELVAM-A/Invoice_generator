@@ -345,15 +345,54 @@
     body.print-invoice #letterApp{display:none;}
     body.print-letter #invoiceApp{display:none;}
   }
-</style>
+
+  /* ---------- LANDING PAGE ---------- */
+  #landing{
+    position:fixed;inset:0;background:var(--navy);
+    display:flex;align-items:center;justify-content:center;z-index:1000;
+  }
+  .landing-card{text-align:center;color:#fff;max-width:420px;padding:20px;}
+  .landing-card h1{font-size:2.4em;margin:0;letter-spacing:1px;}
+  .landing-card p{color:var(--orange-2);margin:6px 0 28px;font-size:1.1em;}
+  .landing-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+  .landing-btns .btn{min-width:160px;padding:14px 20px;font-size:14px;}
+
+  /* ---------- APP SWITCHER ---------- */
+  .app-switch{
+    position:fixed;top:10px;right:10px;z-index:900;
+    display:flex;gap:6px;background:rgba(255,255,255,0.12);
+    padding:4px;border-radius:8px;backdrop-filter:blur(6px);
+  }
+  .app-switch button{
+    background:transparent;color:#fff;border:none;padding:6px 14px;
+    border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;
+    font-family:inherit;
+  }
+  .app-switch button.active{background:var(--orange);color:#fff;}
+ </style>
 </head>
 <body>
+<div id="landing">
+  <div class="landing-card">
+    <h1>ChessKidoo</h1>
+    <p>Building Brilliance</p>
+    <div class="landing-btns">
+      <button class="btn btn-primary" onclick="showApp('invoice')">Invoice Generator</button>
+      <button class="btn btn-secondary" onclick="showApp('letter')">Letter Pad</button>
+    </div>
+  </div>
+</div>
+
 <div class="app" id="invoiceApp">
 
   <!-- ============ FORM PANEL ============ -->
-  <div class="panel">
-    <div class="brand-row">
-      <div class="knight">♞</div>
+    <div class="panel">
+      <div class="app-switch">
+        <button class="active" onclick="showApp('invoice')" id="sw-invoice">Invoice</button>
+        <button onclick="showApp('letter')" id="sw-letter">Letter</button>
+      </div>
+      <div class="brand-row">
+        <div class="knight">♞</div>
       <div>
         <h1>ChessKidoo</h1>
         <p>Invoice Generator</p>
@@ -409,7 +448,7 @@
          <label>Address / Contact</label>
          <textarea id="fromDetails" placeholder="Address, phone, email, GSTIN, etc.">Institution Reg. No.: TN-07-01127105
 Email: chesskidoo37@gmail.com
-Phone: +91 7812868343, +91 90258 46663</textarea>
+Phone: +91 78128 68343, +91 90258 46663</textarea>
        </div>
     </div>
 
@@ -597,7 +636,7 @@ Phone: +91 7812868343, +91 90258 46663</textarea>
         </div>
       </div>
 
-      <div class="foot">ChessKidoo • Building Brilliance • Institution Reg. No.: TN-07-01127105 • chesskidoo37@gmail.com • +91 7812868343, +91 90258 46663</div>
+      <div class="foot">ChessKidoo • Building Brilliance • Institution Reg. No.: TN-07-01127105 • chesskidoo37@gmail.com • +91 78128 68343, +91 90258 46663</div>
     </div>
   </div>
 
@@ -606,6 +645,10 @@ Phone: +91 7812868343, +91 90258 46663</textarea>
   <!-- ============ LETTER PAD ============ -->
   <section class="app" id="letterApp">
     <div class="panel">
+      <div class="app-switch">
+        <button onclick="showApp('invoice')" id="sw-invoice">Invoice</button>
+        <button class="active" onclick="showApp('letter')" id="sw-letter">Letter</button>
+      </div>
       <div class="brand-row">
         <div class="knight">✉</div>
         <div>
@@ -854,8 +897,24 @@ function renderPreview(){
   }
 
   document.getElementById('pv-total').innerText = fmt(total);
-  document.getElementById('pv-paid').innerText = '−' + fmt(paid);
-  document.getElementById('pv-balance').innerText = fmt(balance);
+
+  const paidRow = document.getElementById('pv-paidRow');
+  const balanceLabel = document.getElementById('pv-balanceLabel');
+  if(status === 'paid'){
+    paidRow.style.display = 'none';
+    balanceLabel.innerText = 'Amount Paid';
+    document.getElementById('pv-balance').innerText = fmt(total);
+  } else if(status === 'partial'){
+    paidRow.style.display = 'flex';
+    document.getElementById('pv-paid').innerText = '−' + fmt(paid);
+    balanceLabel.innerText = 'Balance to be Paid';
+    document.getElementById('pv-balance').innerText = fmt(balance);
+  } else {
+    paidRow.style.display = paid > 0 ? 'flex' : 'none';
+    document.getElementById('pv-paid').innerText = '−' + fmt(paid);
+    balanceLabel.innerText = 'Amount to be Paid';
+    document.getElementById('pv-balance').innerText = fmt(total);
+  }
 
   document.getElementById('pv-notes').innerText = document.getElementById('notes').value || '';
 }
@@ -1077,6 +1136,15 @@ function printDoc(which){
   window.addEventListener('afterprint', cleanup);
   window.print();
   setTimeout(cleanup, 600);
+}
+
+function showApp(which){
+  document.getElementById('landing').style.display = 'none';
+  document.getElementById('invoiceApp').style.display = which === 'invoice' ? 'grid' : 'none';
+  document.getElementById('letterApp').style.display = which === 'letter' ? 'grid' : 'none';
+  document.querySelectorAll('.app-switch button').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('sw-' + which);
+  if(btn) btn.classList.add('active');
 }
 
 // init
