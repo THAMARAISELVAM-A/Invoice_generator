@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChessKidoo Letterhead</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+background:#dcdcdc;
+font-family:"Segoe UI",Arial,sans-serif;
+padding:30px;
+}
+
+.page{
+width:210mm;
+min-height:297mm;
+margin:auto;
+background:white;
+position:relative;
+overflow:hidden;
+box-shadow:0 0 15px rgba(0,0,0,.2);
+}
+
+/* TOP STRIP */
+.top-strip{
+height:8px;
+background:#f37021;
+}
+
+/* HEADER */
+.header{
+padding:30px 45px 20px 45px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.left{
+display:flex;
+align-items:center;
+gap:25px;
+}
+
+.logo{
+width:160px;
+}
+
+.title h1{
+font-size:34px;
+color:#112B55;
+font-weight:700;
+}
+
+.title p{
+margin-top:6px;
+font-size:15px;
+color:#666;
+}
+
+.right{
+text-align:right;
+display:flex;
+flex-direction:column;
+gap:6px;
+justify-content:center;
+}
+
+.right .reg-no{
+font-size:12.5px;
+color:#f37021;
+font-weight:bold;
+letter-spacing:0.5px;
+text-transform:uppercase;
+margin-bottom:4px;
+}
+
+.right .contact-detail{
+font-size:14.5px;
+color:#555;
+font-weight:500;
+}
+
+.divider{
+height:3px;
+background:#112B55;
+margin:0 45px;
+}
+
+/* CONTENT */
+.content{
+padding:50px 60px;
+font-size:20px;
+line-height:2;
+color:#222;
+}
+
+.content p{
+margin-bottom:30px;
+}
+
+.content h3{
+margin-top:15px;
+color:#112B55;
+}
+
+.body-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+border-bottom:1.5px solid #112B55;
+padding-bottom:15px;
+margin-bottom:35px;
+font-size:16px;
+color:#444;
+}
+
+.body-header strong{
+color:#112B55;
+}
+
+/* SIGNATURE */
+.signature{
+position:absolute;
+right:60px;
+bottom:110px;
+text-align:center;
+}
+
+.signature-line{
+width:220px;
+height:2px;
+background:#444;
+margin:auto auto 15px;
+}
+
+.signature h2{
+font-size:24px;
+color:#112B55;
+}
+
+.signature p{
+font-style:italic;
+color:#666;
+margin-top:5px;
+}
+
+/* FOOTER */
+.footer{
+position:absolute;
+bottom:0;
+width:100%;
+height:55px;
+}
+
+.blue{
+position:absolute;
+left:0;
+height:55px;
+width:70%;
+background:#112B55;
+clip-path:polygon(0 0,100% 0,92% 100%,0 100%);
+}
+
+.orange{
+position:absolute;
+right:0;
+height:55px;
+width:30%;
+background:#f37021;
+clip-path:polygon(10% 0,100% 0,100% 100%,0 100%);
+}
+
+@page{
+size:A4;
+margin:0;
+}
+
+@media print{
+body{
+background:white;
+padding:0;
+}
+.page{
+box-shadow:none;
+}
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="page">
+
+<div class="top-strip"></div>
+
+<div class="header">
+
+<div class="left">
+
+<img src="logo.png" class="logo">
+
+<div class="title">
+
+<h1>ChessKidoo Chess Academy</h1>
+
+<p>Building Brilliance Through Chess</p>
+
+</div>
+
+</div>
+
+<div class="right">
+
+<div class="reg-no">Institution Reg. No.: TN-07-01127105</div>
+<div class="contact-detail">chesskidoo37@gmail.com</div>
+<div class="contact-detail">+91 78128 68343, +91 90258 46663</div>
+
+</div>
+
+</div>
+
+<div class="divider"></div>
+
+<div class="content">
+
+<div class="body-header">
+<span class="body-ref"><strong>Reference No.</strong> CK/LET/20260707</span>
+<span class="body-date"><strong>Date:</strong> 06 July 2026</span>
+</div>
+
+<p><strong>Dear Parent,</strong></p>
+
+<p>
+We are pleased to share an update regarding your child's progress at ChessKidoo Chess Academy.
+Over the past few weeks, we have observed steady improvement in tactical awareness,
+strategic thinking, and overall confidence at the chessboard.
+</p>
+
+<p>
+Our coaching team remains committed to helping every student reach their highest potential
+through structured coaching, tournament exposure, and personalized guidance.
+</p>
+
+<p>
+Thank you for your continued trust and support.
+We look forward to achieving many more milestones together.
+</p>
+
+<br><br>
+
+<p>Warm Regards,</p>
+
+<h3>ChessKidoo Chess Academy Coaching Team</h3>
+
+</div>
+
+<div class="signature">
+
+<div class="signature-line"></div>
+
+<h2>ChessKidoo Chess Academy</h2>
+
+<p>Authorized Signatory</p>
+
+</div>
+
+<div class="footer">
+
+<div class="blue"></div>
+
+<div class="orange"></div>
+
+</div>
+
+</div>
+
+</body>
+</html>

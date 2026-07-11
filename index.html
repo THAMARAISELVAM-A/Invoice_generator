@@ -320,26 +320,43 @@
     width:800px;max-width:100%;
     background:var(--paper);
     box-shadow:0 10px 40px rgba(15,26,48,0.18);
-    padding:48px 46px 40px;
+    padding:0;
     position:relative;color:var(--ink);
-    font-family:var(--inv-font);font-size:16px;
+    font-family:var(--inv-font);font-size:15px;
+    border-top: 6px solid var(--orange);
   }
-  .ld-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:22px;}
-  .ld-brand{display:flex;align-items:center;gap:10px;font-size:1.15em;font-weight:800;color:var(--navy);}
-  .ld-brand .ld-knight{width:30px;height:30px;display:flex;align-items:center;justify-content:center;background:var(--orange);border-radius:8px;font-size:16px;color:#fff;}
-  .ld-brand em{font-style:italic;font-weight:500;color:var(--orange);font-size:.7em;margin-left:4px;}
-  .ld-logo{height:48px;width:auto;display:block;border-radius:8px;}
+  .ld-inner{padding:52px 60px 26px;}
+  /* Left/Right layout header */
+  .ld-head{display:flex;justify-content:space-between;align-items:center;padding-bottom:20px;}
+  .ld-left{display:flex;align-items:center;gap:18px;}
+  .ld-logo{height:60px;width:auto;display:block;}
   .ld-info{display:flex;flex-direction:column;justify-content:center;}
-  .ld-info .ld-name{font-size:1.05em;font-weight:800;color:var(--navy);line-height:1.2;}
-  .ld-info .ld-meta{font-size:.68em;color:#6b7280;line-height:1.6;margin-top:2px;}
-  .ld-date{font-size:.8em;color:var(--muted);text-align:right;line-height:1.5;}
-  .ld-heading{font-size:1.25em;font-weight:800;color:var(--navy);margin:6px 0 16px;}
-  .ld-body{font-size:1em;line-height:1.85;white-space:pre-line;color:#374151;min-height:200px;}
-  .ld-closing{margin-top:24px;font-size:1em;color:var(--ink);}
-  .ld-sign{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);}
-  .ld-sign .who{font-size:.9em;font-weight:700;color:var(--navy);}
-  .ld-sign .role{font-size:.7em;color:var(--muted);margin-top:2px;}
-
+  .ld-name{font-size:1.5em;font-weight:800;color:var(--navy);line-height:1.2;}
+  .ld-tagline{font-size:0.8em;color:#6b7280;margin-top:2px;font-weight:500;}
+  .ld-right{text-align:right;display:flex;flex-direction:column;gap:4px;justify-content:center;}
+  .ld-right .ld-reg{font-size:11.5px;color:var(--orange);font-weight:bold;letter-spacing:0.3px;text-transform:uppercase;margin-bottom:2px;}
+  .ld-right .ld-contact{font-size:13.5px;color:#555;font-weight:500;}
+  .ld-divider{height:3px;background:var(--navy);margin:5px 0 20px 0;}
+  /* Date / Ref row as body header */
+  .ld-body-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1.5px solid var(--navy);padding-bottom:12px;margin-bottom:28px;font-size:14.5px;color:#444;}
+  .ld-body-header strong{color:var(--navy);}
+  /* Recipient */
+  .ld-to{margin-top:20px;font-size:0.92em;line-height:1.55;}
+  .ld-to .ld-to-label{font-weight:700;color:var(--navy);}
+  .ld-to .ld-to-name{font-weight:700;color:#1f2937;margin-top:2px;}
+  .ld-to .ld-to-addr{color:#4b5563;white-space:pre-line;}
+  /* Subject */
+  .ld-heading{margin:20px 0 16px;font-size:1.0em;font-weight:800;color:var(--navy);}
+  .ld-heading .subj-label{color:var(--orange);margin-right:4px;}
+  /* Body */
+  .ld-body{font-size:1.02em;line-height:1.85;white-space:pre-line;color:#1f2937;min-height:200px;}
+  /* Closing + signature */
+  .ld-closing{margin-top:26px;font-size:1.0em;color:#1f2937;font-weight:500;}
+  .ld-sign{margin-top:4px;}
+  .ld-sign .sign-space{height:56px;}
+  .ld-sign .who{font-size:1.0em;font-weight:800;color:var(--navy);}
+  .ld-sign .role{font-size:0.8em;color:#6b7280;margin-top:2px;}
+  .ld-foot{text-align:center;font-size:0.68em;color:#9ca3af;margin-top:30px;padding:14px 60px 24px;border-top:1px solid #e5e7eb;}
   @media print{
     .panel{display:none;}
     .preview-wrap{padding:0;max-height:none;}
@@ -735,19 +752,31 @@ ChessKidoo Chess Academy Coaching Team</textarea>
 
     <div class="preview-wrap">
       <div id="letterDoc" class="letterdoc">
-        <div class="ld-head">
-          <div class="ld-brand">
-            <img class="ld-logo" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAZABkAAD/2wBDAAIBAQIBAQICAgICAgICAwUDAwMDAwYEBAMFBwYHBwcGBwcICQsJCAgKCAcHCg0KCgsMDAwMBwkODw0MDgsMDAz/2wBDAQICAgMDAwYDAwYMCAcIDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/wAARCAEDAusDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD98KVOT8rLSU7b8vvQA0/N33UdDTtu3mj+H+9QA35t3+NFOX5+n60H/vqgBGb5f71Hpx81DtgYzjd2pf8AlpQAjf7W2k3fL6UMPmH86d/6DQAzc3+99aOF/u7qULupfL3Nt+9QAlFL/h/DQu2gBo6Cl+b+8aFO2nKyjqKAAf71IzM395qSigAZdv8ACy05WJ/iok7UN1+bduoAFXev/wAVR8271pq/d+WpPuqfegBu3bzQv+1+tJj2p9ADfv8Atij/AJaUrL/3zS7vl/2qABvlX/0GgNuoY7aP4s0ANz7/AJU5XxuoxuxR/D70ANZv/wBqnf8AAvzpv/fNLt/75agBV3f5aj73+z9KKVW3/SgBu3czd6T7qfN+tO3fK1G7aq8/eoAOnsabu+UU7+L+9R/D0/CgBu3b8uWo+/7Yp238/em/e/4D6UAOfr/FSfMq8/8AfNHzfWhVz/eoATLK2OlKjfLilo6N70AIflPzGk8v3pwbdTflX3oABu3ChvmfPzU5fmxRQAY3N/SiihV92+hoAbj5OOKfvNNZf++ac3zfSgBv3RxS9RSMzbTSs33v9mgAZc04fcNNpWX7u35qAG4+b/dpML6mnv8AItI397vQA3eq/NR9/wBsUu386T/vqgBfvL9aSTtTqPvf7P1oAOGT3o3fN96k2jG7il6igBPv/L1pGb/eWnN/d/Wm7f7tADlbd/tUh6Gjb1xSZ+Xd81ADv4v7tNyyr96nHd/tUg3fw7aAE/vN9360rHApX+tJ29KAGs2aG3bfu/nSum2m0AL39aTd95adtwvy0bd3NADaR/vH7tO+6Pm3Un8OaAE/j/ClX+HAoooAXbuY80K3y/7NL/47/epqf5zQAbmb+9Sbfm/2qdx70r/7VACfdb6Ubx/t0lDDbQAvf1o3f3eFpOho9qAAs38W4Uu7b3pKXZ96gBKX7p9aZ/31TqAHMuWox/tUjHLUvzUAJsCtSUq4XtSUAOdu1OpjNtX5v4vlpPuq3egBf4f60L1+akVdp/3qX7zfWgAfbSn0/lSf7WF3Ufe+X5aAEp3l+9OpnHvQAr7u1C8N8o/8eprfr6077nvmgBv...
-            <div class="ld-info">
-              <div class="ld-name">ChessKidoo Chess Academy</div>
-              <div class="ld-meta">Institution Reg. No.: TN-07-01127105<br>chesskidoo37@gmail.com | +91 7812868343, +91 90258 46663</div>
+                <div class="ld-inner">
+          <div class="ld-head">
+            <div class="ld-left">
+              <img class="ld-logo" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAZABkAAD/2wBDAAIBAQIBAQICAgICAgICAwUDAwMDAwYEBAMFBwYHBwcGBwcICQsJCAgKCAcHCg0KCgsMDAwMBwkODw0MDgsMDAz/2wBDAQICAgMDAwYDAwYMCAcIDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/wAARCAEDAusDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD98KVOT8rLSU7b8vvQA0/N33UdDTtu3mj+H+9QA35t3+NFOX5+n60H/vqgBGb5f71Hpx81DtgYzjd2pf8AlpQAjf7W2k3fL6UMPmH86d/6DQAzc3+99aOF/u7qULupfL3Nt+9QAlFL/h/DQu2gBo6Cl+b+8aFO2nKyjqKAAf71IzM395qSigAZdv8ACy05WJ/iok7UN1+bduoAFXev/wAVR8271pq/d+WpPuqfegBu3bzQv+1+tJj2p9ADfv8Atij/AJaUrL/3zS7vl/2qABvlX/0GgNuoY7aP4s0ANz7/AJU5XxuoxuxR/D70ANZv/wBqnf8AAvzpv/fNLt/75agBV3f5aj73+z9KKVW3/SgBu3czd6T7qfN+tO3fK1G7aq8/eoAOnsabu+UU7+L+9R/D0/CgBu3b8uWo+/7Yp238/em/e/4D6UAOfr/FSfMq8/8AfNHzfWhVz/eoATLK2OlKjfLilo6N70AIflPzGk8v3pwbdTflX3oABu3ChvmfPzU5fmxRQAY3N/SiihV92+hoAbj5OOKfvNNZf++ac3zfSgBv3RxS9RSMzbTSs33v9mgAZc04fcNNpWX7u35qAG4+b/dpML6mnv8AItI397vQA3eq/NR9/wBsUu386T/vqgBfvL9aSTtTqPvf7P1oAOGT3o3fN96k2jG7il6igBPv/L1pGb/eWnN/d/Wm7f7tADlbd/tUh6Gjb1xSZ+Xd81ADv4v7tNyyr96nHd/tUg3fw7aAE/vN9360rHApX+tJ29KAGs2aG3bfu/nSum2m0AL39aTd95adtwvy0bd3NADaR/vH7tO+6Pm3Un8OaAE/j/ClX+HAoooAXbuY80K3y/7NL/47/epqf5zQAbmb+9Sbfm/2qdx70r/7VACfdb6Ubx/t0lDDbQAvf1o3f3eFpOho9qAAs38W4Uu7b3pKXZ96gBKX7p9aZ/31TqAHMuWox/tUjHLUvzUAJsCtSUq4XtSUAOdu1OpjNtX5v4vlpPuq3egBf4f60L1+akVdp/3qX7zfWgAfbSn0/lSf7WF3Ufe+X5aAEp3l+9OpnHvQAr7u1C8N8o/8eprfr6077nvmgBv...
+            <div class=">
+              <div class="ld-info">
+                <div class="ld-name">ChessKidoo Chess Academy</div>
+                <div class="ld-tagline">Building Brilliance Through Chess</div>
+              </div>
+            </div>
+            <div class="ld-right">
+              <div class="ld-reg">Institution Reg. No.: TN-07-01127105</div>
+              <div class="ld-contact">chesskidoo37@gmail.com</div>
+              <div class="ld-contact">+91 78128 68343, +91 90258 46663</div>
             </div>
           </div>
-          <div class="ld-date" id="ld-date"></div>
-          <div style="font-size:.75em;color:#6b7280;margin-top:4px;" id="ld-no"></div>
-        </div>
-        <hr class="hr">
-        <div class="ld-heading" id="ld-heading" style="display:none;"></div>
+
+          <div class="ld-divider"></div>
+
+          <div class="ld-body-header">
+            <span><strong>Ref No:</strong> <span id="ld-no">—</span></span>
+            <span><strong>Date:</strong> <span id="ld-date">—</span></span>
+          </div>
+
+          <div class="ld-heading" id="ld-heading" style="display:none;"></div>
         <div class="ld-body" id="ld-body"></div>
         <div class="ld-closing" id="ld-closing"></div>
         <div class="ld-sign">
@@ -755,6 +784,7 @@ ChessKidoo Chess Academy Coaching Team</textarea>
           <div class="role">Authorized Signatory</div>
           <div style="font-size:.7em;color:#6b7280;margin-top:4px;">Institution Reg. No.: TN-07-01127105 | chesskidoo37@gmail.com | +91 7812868343, +91 90258 46663</div>
         </div>
+</div>
         <div class="foot">ChessKidoo Chess Academy</div>
       </div>
     </div>
