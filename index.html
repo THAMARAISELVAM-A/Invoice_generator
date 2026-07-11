@@ -1088,9 +1088,9 @@ function downloadPDF(){
 
 function renderLetter(){
   const no = document.getElementById('letterNo').value;
-  document.getElementById('ld-no').innerText = no ? 'No: ' + no : '';
+  document.getElementById('ld-no').innerText = no ? no : '—';
   const d = document.getElementById('letterDate').value;
-  document.getElementById('ld-date').innerText = d ? niceDate(d) : '';
+  document.getElementById('ld-date').innerText = d ? niceDate(d) : '—';
   const h = document.getElementById('letterHeading').value;
   const he = document.getElementById('ld-heading');
   he.style.display = h ? 'block' : 'none';
